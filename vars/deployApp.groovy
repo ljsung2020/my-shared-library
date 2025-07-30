@@ -6,6 +6,6 @@ def call(String env, String customImage = null) {
 
 	def config = new Yaml().load(configText)
 	
-	def deployer = new com.mycompany.Deployment(this, config)
+	def deployer = new com.mycompany.Deployment(this. steps, config)
 	deployer.run(env, customImagae)
 }
