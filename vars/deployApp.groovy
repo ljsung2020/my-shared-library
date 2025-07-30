@@ -1,15 +1,11 @@
 @Grab('org.yaml:snakeyaml:1.30')
 import org.yaml.snakeyaml.Yaml
 
-def call(String env) {
+def call(String env, String customImage = null) {
 	def configText = libraryResource('config.yaml')
 
 	def config = new Yaml().load(configText)
 	
-	def envConfig = config[env]
-	echo "Deploying ${env} with image ${envConfig.image}"
-	sh "docker rm -f ${env}-container || true"
-	sh "docker run -d --name ${env}-container -e ENV=${env} ${envConfig.image}"
-//	def deployer = new com.mycompany.Deployment(this)
-//	deployer.run(env)
+	def deployer = new com.mycompany.Deployment(this, config)
+	deployer.run(env, customImagae)
 }
