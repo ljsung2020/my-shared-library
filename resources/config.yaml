@@ -1,0 +1,7 @@
+staging:
+  image: nginx:alpine
+  replicas: 2
+
+production:
+  image: nginx:stable
+  replicas: 5
