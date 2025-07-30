@@ -3,8 +3,8 @@ import org.yaml.snakeyaml.Yaml
 
 def call(String env) {
 	def configText = libraryResource('config.yaml')
-	def yaml = new Yaml()
-	def config = yaml.load(configText)
+
+	def config = new Yaml().load(configText)
 	
 	def envConfig = config[env]
 	echo "Deploying ${env} with image ${envConfig.image}"
