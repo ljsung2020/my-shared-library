@@ -1,23 +1,19 @@
 package com.mycompany
 
 class Deployment {
-	def steps
-	def config
 
-	Deployment(steps) {
-	    this.steps = steps
-	    this.config = config
-	}
-	
-	def run(String env, String customImage = null) {
-	    def envConfig = config[env]
-	    if(!envvConfig) {
-		steps.error("No configuration found for environment: ${env}")
-	    }
-	    def imageToUse = customImage ?: envConfig.image
+    def run(String env, def config, String customImage = null) {
+        def envConfig = config[env]
+        if (!envConfig) {
+            error("❌ No configuration found for environment: ${env}")
+        }
 
-	    steps.echo "Deploying ${env} with image ${imageToUse}"
-	    steps.sh "docker rm -f ${env}-container || true"
-	    steps.sh "docker run -d --name ${env}-container -e ENV=${env} ${imageToUse}"
-	}
+        // customImage 있으면 우선, 없으면 config.yaml 값
+        def imageToUse = customImage ?: envConfig.image
+
+        echo "▶️ Deploying ${env} with image ${imageToUse}"
+        sh "docker rm -f ${env}-container || true"
+        sh "docker run -d --name ${env}-container -e ENV=${env} ${imageToUse}"
+    }
 }
+
